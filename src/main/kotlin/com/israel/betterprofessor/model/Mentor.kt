@@ -12,7 +12,7 @@ class Mentor {
     @JsonIgnore
     @Id
     @GeneratedValue
-    var mentorid: Long? = null
+    var mentorId: Long? = null
 
     @ApiModelProperty(required = true)
     var firstName: String? = null

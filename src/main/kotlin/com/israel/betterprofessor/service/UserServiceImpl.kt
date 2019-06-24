@@ -67,8 +67,14 @@ open class UserServiceImpl(
         if (userRepository.findById(id).isPresent) {
             userRepository.deleteById(id)
         } else {
-            throw EntityNotFoundException(id.toString())
+            throw UserNotFoundException(id)
         }
+    }
+
+    override fun delete() {
+        val currentUser = findCurrentUser()
+
+        delete(currentUser.userId!!)
     }
 
     @Transactional

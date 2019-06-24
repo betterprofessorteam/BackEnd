@@ -36,12 +36,12 @@ class User {
     var userRoles: MutableList<UserRole> = mutableListOf()
 
     @ApiModelProperty(required = true)
-    @OneToOne(cascade = [CascadeType.ALL])
+    @OneToOne(cascade = [CascadeType.ALL], orphanRemoval = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     var mentorData: Mentor? = null
 
     @ApiModelProperty(required = true)
-    @OneToOne(cascade = [CascadeType.ALL])
+    @OneToOne(cascade = [CascadeType.ALL], orphanRemoval = true)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     var studentData: Student? = null
 

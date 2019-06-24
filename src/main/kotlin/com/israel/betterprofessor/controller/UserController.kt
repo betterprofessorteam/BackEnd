@@ -65,4 +65,12 @@ class UserController(
         userService.addStudentToMentor(id)
         return ResponseEntity<HttpStatus>(HttpStatus.OK)
     }
+
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    @DeleteMapping("/user/delete")
+    fun deleteUser(): ResponseEntity<*> {
+        userService.delete()
+
+        return ResponseEntity<HttpStatus>(HttpStatus.OK)
+    }
 }
