@@ -1,5 +1,6 @@
 package com.israel.betterprofessor.handler
 
+import com.israel.betterprofessor.exception.BadRequestException
 import com.israel.betterprofessor.exception.JsonFieldNotFoundException
 import com.israel.betterprofessor.exception.ResourceNotFoundException
 import org.springframework.beans.TypeMismatchException
@@ -38,14 +39,14 @@ class RestExceptionHandler : ResponseEntityExceptionHandler() {
         return ResponseEntity(errorDetail, null, HttpStatus.NOT_FOUND)
     }
 
-    @ExceptionHandler(JsonFieldNotFoundException::class)
-    fun handleJsonFieldNotFoundException(jfnfe: JsonFieldNotFoundException, request: HttpServletRequest): ResponseEntity<*> {
+    @ExceptionHandler(BadRequestException::class)
+    fun handleJsonFieldNotFoundException(bre: BadRequestException, request: HttpServletRequest): ResponseEntity<*> {
         val errorDetail = ErrorDetail()
         errorDetail.setTimestamp(Date().time)
         errorDetail.status = HttpStatus.BAD_REQUEST.value()
-        errorDetail.title = "Json Field Not Found"
-        errorDetail.detail = jfnfe.message
-        errorDetail.developerMessage = jfnfe::class.java.name
+        errorDetail.title = "Bad Request"
+        errorDetail.detail = bre.message
+        errorDetail.developerMessage = bre::class.java.name
 
         return ResponseEntity(errorDetail, null, HttpStatus.BAD_REQUEST)
     }

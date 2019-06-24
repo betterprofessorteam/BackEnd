@@ -1,5 +1,6 @@
 package com.israel.betterprofessor.service
 
+import com.israel.betterprofessor.exception.BadRequestException
 import com.israel.betterprofessor.exception.JsonFieldNotFoundException
 import com.israel.betterprofessor.exception.UserNotFoundException
 import com.israel.betterprofessor.model.Mentor
@@ -14,9 +15,7 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.lang.RuntimeException
 
-import javax.persistence.EntityNotFoundException
 import java.util.ArrayList
 
 @Service(value = "userService")
@@ -33,12 +32,12 @@ open class UserServiceImpl(
 
     override fun findCurrentMentor(): Mentor {
         val currentUser = findCurrentUser()
-        return currentUser.mentorData ?: throw RuntimeException("Current user is not a mentor")
+        return currentUser.mentorData ?: throw BadRequestException("Current user is not a mentor")
     }
 
     override fun findCurrentStudent(): Student {
         val currentUser = findCurrentUser()
-        return currentUser.studentData ?: throw RuntimeException("Current user is not a student")
+        return currentUser.studentData ?: throw BadRequestException("Current user is not a student")
     }
 
     override fun findAllStudentUser(): MutableList<User> {
@@ -96,7 +95,7 @@ open class UserServiceImpl(
                 newUser.studentData = user.studentData
                 newUser.studentData!!.user = newUser
             }
-            else -> throw RuntimeException("No user type found")
+            else -> throw BadRequestException("No user type found")
         }
 
         val userRole = roleRepository.findByName("user")
@@ -108,37 +107,32 @@ open class UserServiceImpl(
     }
 
     @Transactional
-    override fun update(user: User, id: Long): User {
+    override fun update(user: User): User {
         val authentication = SecurityContextHolder.getContext().authentication
         val currentUser = userRepository.findByUsername(authentication.name)
 
         if (currentUser != null) {
-            if (id == currentUser.userId) {
-
-                if (user.username != null) {
-                    currentUser.username = user.username
-                }
-
-                if (user.password != null) {
-                    currentUser.setPasswordEncrypt(user.password!!)
-                }
-
-                if (user.userRoles.isNotEmpty()) {
-                    // with so many relationships happening, I decided to go
-                    // with old school queries
-                    // delete the old ones
-                    roleRepository.deleteAllUserRoleByUserId(currentUser.userId!!)
-
-                    // add the new ones
-                    for (ur in user.userRoles) {
-                        roleRepository.insertUserRole(id, ur.role!!.roleId)
-                    }
-                }
-
-                return userRepository.save(currentUser)
-            } else {
-                throw RuntimeException("Current user invalid userId")
+            if (user.username != null) {
+                currentUser.username = user.username
             }
+
+            if (user.password != null) {
+                currentUser.setPasswordEncrypt(user.password!!)
+            }
+
+            if (user.userRoles.isNotEmpty()) {
+                // with so many relationships happening, I decided to go
+                // with old school queries
+                // delete the old ones
+                roleRepository.deleteAllUserRoleByUserId(currentUser.userId!!)
+
+                // add the new ones
+                for (ur in user.userRoles) {
+                    roleRepository.insertUserRole(currentUser.userId!!, ur.role!!.roleId!!)
+                }
+            }
+
+            return userRepository.save(currentUser)
         } else {
             throw UserNotFoundException(authentication.name)
         }
@@ -148,10 +142,10 @@ open class UserServiceImpl(
     override fun addStudentToMentor(id: Long) {
         val studentUser = findUserById(id)
 
-        studentUser.studentData ?: throw RuntimeException("User id $id is not a student")
+        studentUser.studentData ?: throw BadRequestException("User id $id is not a student")
 
         val currentMentorUser = findCurrentMentor().also {
-            if (it.students.contains(studentUser.studentData!!)) throw RuntimeException("User id $id already added to mentor's students")
+            if (it.students.contains(studentUser.studentData!!)) throw BadRequestException("User id $id already added to mentor's students")
             it.students.add(studentUser.studentData!!)
         }.user
 

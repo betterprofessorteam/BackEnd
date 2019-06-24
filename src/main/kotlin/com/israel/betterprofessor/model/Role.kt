@@ -10,7 +10,7 @@ import javax.persistence.*
 class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    var roleId: Long = 0
+    var roleId: Long? = null
 
     @Column(nullable = false, unique = true)
     var name: String? = null

@@ -6,6 +6,6 @@ interface TrackerService {
 
     fun findAll(): MutableList<Tracker>
     fun findAllLiveTracker(): MutableList<Tracker>
-    fun save(tracker: Tracker): Long
+    fun save(tracker: Tracker): Tracker
     fun saveAll(trackers: MutableList<Tracker>)
 }
