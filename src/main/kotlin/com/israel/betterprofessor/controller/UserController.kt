@@ -20,6 +20,7 @@ class UserController(
         return ResponseEntity(addedUser, HttpStatus.CREATED)
     }
 
+    @ApiOperation(value = "Get the current user data", response = User::class)
     @PreAuthorize("hasAuthority('ROLE_USER')")
     @GetMapping("/user")
     fun getUser(): ResponseEntity<*> {
@@ -27,6 +28,7 @@ class UserController(
         return ResponseEntity(user, HttpStatus.OK)
     }
 
+    @ApiOperation(value = "Get the current mentor's students", response = User::class, responseContainer = "List")
     @PreAuthorize("hasAuthority('ROLE_USER')")
     @GetMapping("/user/mentor/students")
     fun getMentorStudents(): ResponseEntity<*> {
@@ -39,6 +41,7 @@ class UserController(
         return ResponseEntity(userStudents, HttpStatus.OK)
     }
 
+    @ApiOperation(value = "Get the current student's mentors", response = User::class, responseContainer = "List")
     @PreAuthorize("hasAuthority('ROLE_USER')")
     @GetMapping("/user/student/mentors")
     fun getStudentMentors(): ResponseEntity<*> {
@@ -46,14 +49,16 @@ class UserController(
         return ResponseEntity(mentors, HttpStatus.OK)
     }
 
+    @ApiOperation(value = "Get all students", response = User::class, responseContainer = "List")
     @PreAuthorize("hasAuthority('ROLE_USER')")
-    @GetMapping("/students")
+    @GetMapping("/user/students")
     fun getStudentUsers(): ResponseEntity<*> {
         val studentUsers = userService.findAllStudentUser()
 
         return ResponseEntity(studentUsers, HttpStatus.OK)
     }
 
+    @ApiOperation(value = "Add a student to the current mentor")
     @PreAuthorize("hasAuthority('ROLE_USER')")
     @PostMapping("/user/mentor/students/{id}")
     fun addStudentToMentor(@PathVariable("id") id: Long): ResponseEntity<*> {

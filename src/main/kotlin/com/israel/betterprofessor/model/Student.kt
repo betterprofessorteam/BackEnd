@@ -2,6 +2,7 @@ package com.israel.betterprofessor.model
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import io.swagger.annotations.ApiModelProperty
 import javax.persistence.*
 
 @Entity
@@ -16,10 +17,12 @@ class Student {
     var firstName: String? = null
     var lastName: String? = null
 
+    @ApiModelProperty(hidden = true)
     @OneToOne
     @JsonIgnore
     var user: User? = null
 
+    @ApiModelProperty(hidden = true)
     @ManyToMany(mappedBy = "students")
     @JsonIgnoreProperties("students")
     @JsonIgnore

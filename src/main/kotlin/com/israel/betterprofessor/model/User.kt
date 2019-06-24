@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.israel.betterprofessor.model.Auditable
+import io.swagger.annotations.ApiModelProperty
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 
@@ -23,10 +24,12 @@ class User : Auditable {
     @Column(nullable = false, unique = true)
     var username: String? = null
 
+    @ApiModelProperty(hidden = true)
     @Column(nullable = false)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     var password: String? = null
 
+    @ApiModelProperty(hidden = true)
     @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL])
     @JsonIgnore
     @JsonIgnoreProperties("user")
@@ -74,6 +77,7 @@ class User : Auditable {
         return rtnList
     }
 
+    @ApiModelProperty(hidden = true)
     fun setPasswordEncrypt(password: String) {
         val passwordEncoder = BCryptPasswordEncoder()
         this.password = passwordEncoder.encode(password)

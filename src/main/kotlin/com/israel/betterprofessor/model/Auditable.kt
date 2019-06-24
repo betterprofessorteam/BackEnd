@@ -1,5 +1,6 @@
 package com.israel.betterprofessor.model
 
+import io.swagger.annotations.ApiModelProperty
 import org.springframework.data.annotation.CreatedBy
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedBy
@@ -16,16 +17,20 @@ import javax.persistence.TemporalType.TIMESTAMP
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener::class)
 abstract class Auditable {
+    @ApiModelProperty(hidden = true)
     @CreatedBy
     protected var createdBy: String? = null
 
+    @ApiModelProperty(hidden = true)
     @CreatedDate
     @Temporal(TIMESTAMP)
     protected var createdDate: Date? = null
 
+    @ApiModelProperty(hidden = true)
     @LastModifiedBy
     protected var lastModifiedBy: String? = null
 
+    @ApiModelProperty(hidden = true)
     @LastModifiedDate
     @Temporal(TIMESTAMP)
     protected var lastModifiedDate: Date? = null
