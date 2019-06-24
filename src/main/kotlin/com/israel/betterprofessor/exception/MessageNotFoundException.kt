@@ -1,7 +1,9 @@
 package com.israel.betterprofessor.exception
 
-import java.lang.RuntimeException
+import org.springframework.http.HttpStatus
+import org.springframework.web.bind.annotation.ResponseStatus
 
-class MessageNotFoundException : RuntimeException {
+@ResponseStatus(HttpStatus.NOT_FOUND)
+class MessageNotFoundException : ResourceNotFoundException {
     constructor(id: Long): super("Message id $id cannot be found!")
 }

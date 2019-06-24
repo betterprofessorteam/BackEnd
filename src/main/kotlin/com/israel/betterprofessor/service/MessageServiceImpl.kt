@@ -21,7 +21,7 @@ class MessageServiceImpl(
 
         if (message.receiverUserId == null) throw JsonFieldNotFoundException("receiverUserId")
 
-//        userService.findUserById(message.receiverUserId!!)
+        userService.findUserById(message.receiverUserId!!)
 
         val newMessage = Message(
                 currentUser.userId,

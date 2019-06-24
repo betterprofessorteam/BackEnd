@@ -12,13 +12,16 @@ class Message {
     var messageId: Long? = null
 
     // unidirectional constraint
-    @ManyToOne(targetEntity = User::class)
-    @JoinColumn(name = "senderUserId", referencedColumnName = "userId")
+//    @ManyToOne(targetEntity = User::class)
+//    @JoinColumn(name = "senderUserId")
+
+    @Column(nullable = false)
     var senderUserId: Long? = null
 
     @ApiModelProperty(required = true)
-    @ManyToOne(targetEntity = User::class)
-    @JoinColumn(name = "receiverUserId", referencedColumnName = "userId")
+//    @ManyToOne(targetEntity = User::class)
+//    @JoinColumn(name = "receiverUserId")
+    @Column(nullable = false)
     var receiverUserId: Long? = null
 
     // unix time UTC
