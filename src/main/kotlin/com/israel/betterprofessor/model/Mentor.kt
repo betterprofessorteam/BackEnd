@@ -14,7 +14,10 @@ class Mentor {
     @GeneratedValue
     var mentorid: Long? = null
 
+    @ApiModelProperty(required = true)
     var firstName: String? = null
+
+    @ApiModelProperty(required = true)
     var lastName: String? = null
 
     @ApiModelProperty(hidden = true)
@@ -22,7 +25,6 @@ class Mentor {
     @JsonIgnore
     var user: User? = null
 
-    @ApiModelProperty(hidden = true)
     @ManyToMany
     @JoinTable(name = "mentorStudents",
             joinColumns = [JoinColumn(name = "mentorId")],

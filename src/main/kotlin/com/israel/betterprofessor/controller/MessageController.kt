@@ -4,6 +4,7 @@ import com.israel.betterprofessor.model.Message
 import com.israel.betterprofessor.model.User
 import com.israel.betterprofessor.service.MessageService
 import io.swagger.annotations.ApiOperation
+import io.swagger.annotations.ApiParam
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -39,7 +40,7 @@ class MessageController(private val messageService: MessageService) {
     @ApiOperation(value = "Set the message as read")
     @PreAuthorize("hasAuthority('ROLE_USER')")
     @PostMapping("/messages/{id}/read")
-    fun setMessageRead(@PathVariable("id") id: Long): ResponseEntity<*> {
+    fun setMessageRead(@ApiParam(value = "messageId") @PathVariable("id") id: Long): ResponseEntity<*> {
         messageService.setMessageRead(id)
         return ResponseEntity<HttpStatus>(HttpStatus.OK)
     }

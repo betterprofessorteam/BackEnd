@@ -14,15 +14,16 @@ class Student {
     @GeneratedValue
     var studentId: Long? = null
 
+    @ApiModelProperty(required = true)
     var firstName: String? = null
+
+    @ApiModelProperty(required = true)
     var lastName: String? = null
 
-    @ApiModelProperty(hidden = true)
     @OneToOne
     @JsonIgnore
     var user: User? = null
 
-    @ApiModelProperty(hidden = true)
     @ManyToMany(mappedBy = "students")
     @JsonIgnoreProperties("students")
     @JsonIgnore

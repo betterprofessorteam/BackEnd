@@ -1,5 +1,6 @@
 package com.israel.betterprofessor.model
 
+import io.swagger.annotations.ApiModelProperty
 import javax.persistence.*
 
 @Entity
@@ -15,6 +16,7 @@ class Message {
     @JoinColumn(name = "senderUserId", referencedColumnName = "userId")
     var senderUserId: Long? = null
 
+    @ApiModelProperty(required = true)
     @ManyToOne(targetEntity = User::class)
     @JoinColumn(name = "receiverUserId", referencedColumnName = "userId")
     var receiverUserId: Long? = null
@@ -23,6 +25,8 @@ class Message {
     var timeSent: Long? = null
 
     var timeRead: Long? = null
+
+    @ApiModelProperty(required = true)
     var text: String? = null
 
     constructor()

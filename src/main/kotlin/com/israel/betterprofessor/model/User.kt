@@ -21,24 +21,26 @@ class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     var userId: Long? = null
 
+    @ApiModelProperty(required = true)
     @Column(nullable = false, unique = true)
     var username: String? = null
 
-    @ApiModelProperty(hidden = true)
+    @ApiModelProperty(required = true)
     @Column(nullable = false)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     var password: String? = null
 
-    @ApiModelProperty(hidden = true)
     @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL])
     @JsonIgnore
     @JsonIgnoreProperties("user")
     var userRoles: MutableList<UserRole> = mutableListOf()
 
+    @ApiModelProperty(required = true)
     @OneToOne(cascade = [CascadeType.ALL])
     @JsonInclude(JsonInclude.Include.NON_NULL)
     var mentorData: Mentor? = null
 
+    @ApiModelProperty(required = true)
     @OneToOne(cascade = [CascadeType.ALL])
     @JsonInclude(JsonInclude.Include.NON_NULL)
     var studentData: Student? = null
@@ -77,7 +79,7 @@ class User {
         return rtnList
     }
 
-    @ApiModelProperty(hidden = true)
+    @JsonIgnore
     fun setPasswordEncrypt(password: String) {
         val passwordEncoder = BCryptPasswordEncoder()
         this.password = passwordEncoder.encode(password)
