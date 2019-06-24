@@ -29,6 +29,9 @@ class Student {
     @JsonIgnore
     var mentors: MutableList<Mentor> = mutableListOf()
 
+    @OneToMany
+    var projects: MutableList<Project> = mutableListOf()
+
     constructor()
     constructor(firstName: String?, lastName: String?) {
         this.firstName = firstName

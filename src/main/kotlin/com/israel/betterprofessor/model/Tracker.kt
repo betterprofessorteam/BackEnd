@@ -7,25 +7,49 @@ import javax.persistence.*
 @Table(name = "trackers")
 class Tracker {
 
+    companion object {
+        const val TYPE_PROJECT = "Project"
+        const val TYPE_FEEDBACK = "Feedback"
+        const val TYPE_LETTER_OF_RECOMMENDATION = "Letter of Recommendation"
+
+        fun isValidType(type: String): Boolean {
+            return type == TYPE_PROJECT || type == TYPE_FEEDBACK || type == TYPE_LETTER_OF_RECOMMENDATION
+        }
+    }
+
     @Id
     @GeneratedValue
     var trackerId: Long? = null
 
     var type: String? = null
     var name: String? = null
-    var description: String? = null
 
     // unix time UTC
     var deadline: Long? = null
 
     var shouldSendMessage: Boolean? = null
-
-    @JsonIgnore
     var messageFromUserId: Long? = null
-
     var messageToUserId: Long? = null
     var messageText: String? = null
 
     constructor()
+    constructor(
+            type: String?,
+            name: String?,
+            deadline: Long?,
+            shouldSendMessage: Boolean?,
+            messageFromUserId: Long?,
+            messageToUserId: Long?,
+            messageText: String?
+    ) {
+        this.type = type
+        this.name = name
+        this.deadline = deadline
+        this.shouldSendMessage = shouldSendMessage
+        this.messageFromUserId = messageFromUserId
+        this.messageToUserId = messageToUserId
+        this.messageText = messageText
+    }
+
 
 }

@@ -1,13 +1,12 @@
 package com.israel.betterprofessor.service
 
+import com.israel.betterprofessor.exception.BadRequestException
 import com.israel.betterprofessor.exception.JsonFieldNotFoundException
 import com.israel.betterprofessor.exception.MessageNotFoundException
 import com.israel.betterprofessor.model.Message
 import com.israel.betterprofessor.repository.MessageRepository
-import com.israel.betterprofessor.service.MessageService
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.lang.RuntimeException
 
 @Service("messageService")
 class MessageServiceImpl(
@@ -52,7 +51,7 @@ class MessageServiceImpl(
         val message = messageRepository.findById(id)
                 .orElseThrow { MessageNotFoundException(id) }
 
-        if (message.receiverUserId != currentUser.userId) throw RuntimeException("Message id $id was not received by the current user")
+        if (message.receiverUserId != currentUser.userId) throw BadRequestException("Message id $id was not received by the current user")
 
         if (message.timeRead!! > message.timeSent!!) return // message already read
 
