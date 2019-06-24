@@ -9,7 +9,7 @@ import java.util.Objects
 
 @Entity
 @Table(name = "userRoles")
-class UserRole : Auditable, Serializable {
+class UserRole : Serializable {
     @Id
     @ManyToOne
     @JoinColumn(name = "userId")

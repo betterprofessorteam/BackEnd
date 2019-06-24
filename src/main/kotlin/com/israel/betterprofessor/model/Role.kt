@@ -7,7 +7,7 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "roles")
-class Role : Auditable {
+class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     var roleId: Long = 0

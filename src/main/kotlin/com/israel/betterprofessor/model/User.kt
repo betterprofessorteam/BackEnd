@@ -16,7 +16,7 @@ import java.util.ArrayList
 
 @Entity
 @Table(name = "users")
-class User : Auditable {
+class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     var userId: Long? = null
