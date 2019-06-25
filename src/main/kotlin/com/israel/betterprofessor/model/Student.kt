@@ -29,7 +29,8 @@ class Student {
     @JsonIgnore
     var mentors: MutableList<Mentor> = mutableListOf()
 
-    @OneToMany
+    @JsonIgnore
+    @OneToMany(mappedBy = "student", cascade = [CascadeType.ALL])
     var projects: MutableList<Project> = mutableListOf()
 
     constructor()

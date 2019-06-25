@@ -30,6 +30,9 @@ class User {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     var password: String? = null
 
+    @Column
+    var email: String? = null
+
     @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL])
     @JsonIgnore
     @JsonIgnoreProperties("user")
@@ -45,12 +48,12 @@ class User {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     var studentData: Student? = null
 
-    @OneToMany(cascade = [CascadeType.ALL])
+    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
     @JoinColumn(name = "senderUserId", referencedColumnName = "userId")
     @JsonIgnore
     var messageSent: MutableList<Message> = mutableListOf()
 
-    @OneToMany(cascade = [CascadeType.ALL])
+    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
     @JoinColumn(name = "receiverUserId", referencedColumnName = "userId")
     @JsonIgnore
     var messageReceived: MutableList<Message> = mutableListOf()

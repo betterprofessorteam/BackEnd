@@ -9,6 +9,7 @@ import org.springframework.context.MessageSource
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.web.HttpRequestMethodNotSupportedException
 import org.springframework.web.bind.annotation.ControllerAdvice
@@ -50,6 +51,18 @@ class RestExceptionHandler : ResponseEntityExceptionHandler() {
 
         return ResponseEntity(errorDetail, null, HttpStatus.BAD_REQUEST)
     }
+
+//    @ExceptionHandler(HttpMessageNotReadableException::class)
+//    fun handleHttpMessageNotReadableException(hmnre: HttpMessageNotReadableException, request: HttpServletRequest): ResponseEntity<*> {
+//        val errorDetail = ErrorDetail()
+//        errorDetail.setTimestamp(Date().time)
+//        errorDetail.status = HttpStatus.BAD_REQUEST.value()
+//        errorDetail.title = "Bad Request"
+//        errorDetail.detail = hmnre.message
+//        errorDetail.developerMessage = hmnre::class.java.name
+//
+//        return ResponseEntity(errorDetail, null, HttpStatus.BAD_REQUEST)
+//    }
 
     override fun handleTypeMismatch(ex: TypeMismatchException, headers: HttpHeaders, status: HttpStatus, request: WebRequest): ResponseEntity<Any> {
         val errorDetail = ErrorDetail()

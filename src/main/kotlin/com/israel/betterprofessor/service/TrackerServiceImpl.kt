@@ -18,22 +18,25 @@ class TrackerServiceImpl(
         trackerRepository.saveAll(trackers)
     }
 
-    override fun findAll(): MutableList<Tracker> {
-        val trackers = mutableListOf<Tracker>()
-        trackerRepository.findAll().iterator().forEachRemaining { trackers.add(it) }
-        return trackers
+    override fun findAllOfCurrent(): MutableList<Tracker> {
+        val currentUser = userService.findCurrentUser()
+
+        if (currentUser.mentorData == null) throw BadRequestException("Current user is not a mentor")
+
+        return currentUser.mentorData!!.trackers
     }
 
     override fun findAllLiveTracker(): MutableList<Tracker> {
         val trackers = mutableListOf<Tracker>()
-        val currentTime = System.currentTimeMillis()
-        trackerRepository.findAllLiveTracker(currentTime).iterator().forEachRemaining { trackers.add(it) }
+        trackerRepository.findAllTrackerToSend().iterator().forEachRemaining { trackers.add(it) }
         return trackers
     }
 
     @Transactional
     override fun save(tracker: Tracker): Tracker {
-        StaticHelpers.checkJsonField(tracker.messageToUserId, "messageToUserId")
+        // TODO can only send message to own student. How about no
+
+        StaticHelpers.checkJsonField(tracker.messageReceiverUserId, "messageReceiverUserId")
         StaticHelpers.checkJsonField(tracker.type, "type")
         StaticHelpers.checkJsonField(tracker.name, "name")
         StaticHelpers.checkJsonField(tracker.deadline, "deadline")
@@ -42,7 +45,9 @@ class TrackerServiceImpl(
 
         if (!Tracker.isValidType(tracker.type!!)) throw BadRequestException("Invalid tracker type")
         val currentUser = userService.findCurrentUser()
-        userService.findUserById(tracker.messageToUserId!!)
+        userService.findUserById(tracker.messageReceiverUserId!!)
+
+        currentUser.mentorData ?: throw BadRequestException("Current user must be a mentor")
 
         var newTracker = Tracker(
                 tracker.type,
@@ -50,8 +55,9 @@ class TrackerServiceImpl(
                 tracker.deadline,
                 tracker.shouldSendMessage,
                 currentUser.userId,
-                tracker.messageToUserId,
-                tracker.messageText
+                tracker.messageReceiverUserId,
+                tracker.messageText,
+                currentUser.mentorData
         )
 
         return trackerRepository.save(newTracker)

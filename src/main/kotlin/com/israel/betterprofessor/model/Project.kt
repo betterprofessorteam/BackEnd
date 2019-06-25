@@ -1,5 +1,6 @@
 package com.israel.betterprofessor.model
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import javax.persistence.*
 
 @Entity
@@ -14,6 +15,14 @@ class Project {
     var deadline: Long? = null
 
     @ManyToOne
+    @JoinColumn(name = "studentId")
+    @JsonIgnore
     var student: Student? = null
 
+    constructor()
+    constructor(title: String?, deadline: Long?, student: Student?) {
+        this.title = title
+        this.deadline = deadline
+        this.student = student
+    }
 }
