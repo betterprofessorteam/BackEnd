@@ -1,7 +1,6 @@
 package com.israel.betterprofessor.controller
 
 import com.israel.betterprofessor.model.Tracker
-import com.israel.betterprofessor.model.User
 import com.israel.betterprofessor.service.TrackerService
 import io.swagger.annotations.ApiOperation
 import org.springframework.http.HttpStatus
@@ -23,7 +22,7 @@ class TrackerController(private val trackerService: TrackerService) {
     @ApiOperation(value = "Get trackers of the current mentor user", response = Tracker::class, responseContainer = "List")
     @GetMapping("/trackers")
     fun getTrackers(): ResponseEntity<*> {
-        return ResponseEntity(trackerService.findAllOfCurrentUser(), HttpStatus.OK)
+        return ResponseEntity(trackerService.findAllOfCurrent(), HttpStatus.OK)
     }
 
 }
