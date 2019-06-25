@@ -152,4 +152,18 @@ open class UserServiceImpl(
         userRepository.save(currentMentorUser!!)
 
     }
+
+    @Transactional
+    override fun removeStudentFromMentor(id: Long) {
+        val studentUser = findUserById(id)
+
+        studentUser.studentData ?: throw BadRequestException("User id $id is not a student")
+
+        val currentMentorUser = findCurrentMentor().also {
+            if (!it.students.contains(studentUser.studentData!!)) throw BadRequestException("User id $id is not added to mentor's students")
+            it.students.remove(studentUser.studentData!!)
+        }.user
+
+        userRepository.save(currentMentorUser!!)
+    }
 }

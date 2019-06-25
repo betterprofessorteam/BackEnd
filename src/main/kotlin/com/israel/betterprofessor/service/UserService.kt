@@ -18,4 +18,5 @@ interface UserService {
     fun update(user: User): User
 
     fun addStudentToMentor(id: Long)
+    fun removeStudentFromMentor(id: Long)
 }

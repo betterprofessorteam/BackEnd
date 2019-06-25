@@ -60,9 +60,17 @@ class UserController(
 
     @ApiOperation(value = "Add a student to the current mentor")
     @PreAuthorize("hasAuthority('ROLE_USER')")
-    @PostMapping("/user/mentor/students/{id}")
+    @PostMapping("/user/mentor/students/{id}/add")
     fun addStudentToMentor(@PathVariable("id") id: Long): ResponseEntity<*> {
         userService.addStudentToMentor(id)
+        return ResponseEntity<HttpStatus>(HttpStatus.OK)
+    }
+
+    @ApiOperation(value = "Remove a student from the current mentor")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    @PostMapping("user/mentor/students/{id}/remove")
+    fun removeStudentFromMentor(@PathVariable("id") id: Long): ResponseEntity<*> {
+        userService.removeStudentFromMentor(id)
         return ResponseEntity<HttpStatus>(HttpStatus.OK)
     }
 
