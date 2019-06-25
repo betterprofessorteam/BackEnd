@@ -29,6 +29,7 @@ class Tracker {
 
     var shouldSendMessage: Boolean? = null
 
+    // TODO constraint this
     var messageSenderUserId: Long? = null
 
     // not constraint, should be able to exist without the receiver

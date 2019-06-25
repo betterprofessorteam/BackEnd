@@ -42,7 +42,7 @@ class SeedData(
 //        student0.user = studentUser0
 //
 //        userRepository.save(studentUser0)
-
+//
         val faker = Faker()
 
         for (i in 0..10) {
