@@ -1,6 +1,5 @@
 package com.israel.betterprofessor.controller
 
-import com.israel.betterprofessor.model.Message
 import com.israel.betterprofessor.model.Project
 import com.israel.betterprofessor.service.ProjectService
 import io.swagger.annotations.ApiOperation
@@ -14,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class ProjectController(private val projectService: ProjectService) {
 
-    @ApiOperation(value = "Add a project to the current user", response = Message::class)
+    @ApiOperation(value = "Add a project to the current user", response = Project::class)
     @PreAuthorize("hasAuthority('ROLE_USER')")
     @PostMapping("/projects")
     fun addProject(@RequestBody project: Project): ResponseEntity<*> {

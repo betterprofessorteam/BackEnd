@@ -28,6 +28,14 @@ class UserController(
         return ResponseEntity(user, HttpStatus.OK)
     }
 
+    @ApiOperation(value = "Get the user by its id", response = User::class)
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    @GetMapping("/users/{id}")
+    fun getUser(@PathVariable("id") id: Long): ResponseEntity<*> {
+        val user = userService.findUserById(id)
+        return ResponseEntity(user, HttpStatus.OK)
+    }
+
     @ApiOperation(value = "Get the current mentor's students", response = User::class, responseContainer = "List")
     @PreAuthorize("hasAuthority('ROLE_USER')")
     @GetMapping("/user/mentor/students")
