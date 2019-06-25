@@ -30,6 +30,9 @@ class User {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     var password: String? = null
 
+    @Column
+    var email: String? = null
+
     @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL])
     @JsonIgnore
     @JsonIgnoreProperties("user")

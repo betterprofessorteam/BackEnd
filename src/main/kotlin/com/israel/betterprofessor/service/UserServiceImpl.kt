@@ -1,5 +1,6 @@
 package com.israel.betterprofessor.service
 
+import com.israel.betterprofessor.StaticHelpers
 import com.israel.betterprofessor.exception.BadRequestException
 import com.israel.betterprofessor.exception.JsonFieldNotFoundException
 import com.israel.betterprofessor.exception.UserNotFoundException
@@ -79,28 +80,37 @@ open class UserServiceImpl(
     @Transactional
     override fun save(user: User): User {
         val newUser = User()
-        newUser.username = user.username ?: throw JsonFieldNotFoundException("username")
-        newUser.setPasswordEncrypt(user.password ?: throw JsonFieldNotFoundException("password"))
+        newUser.username = StaticHelpers.checkJsonField(user.username, "username")
+        newUser.setPasswordEncrypt(StaticHelpers.checkJsonField(user.password, "password"))
+        newUser.email = user.email
 
+        // mentor/student data
         when {
             user.mentorData != null -> {
-                user.mentorData!!.firstName ?: throw JsonFieldNotFoundException("firstName")
-                user.mentorData!!.lastName ?: throw JsonFieldNotFoundException("lastName")
-                newUser.mentorData = user.mentorData
+                newUser.mentorData = Mentor(
+                        StaticHelpers.checkJsonField(user.mentorData!!.firstName, "firstName"),
+                        StaticHelpers.checkJsonField(user.mentorData!!.lastName, "lastName")
+                )
                 newUser.mentorData!!.user = newUser
+
+                val mentorRole = roleRepository.findByName("mentor")
+                newUser.userRoles.add(UserRole(newUser, mentorRole))
             }
             user.studentData != null -> {
-                user.studentData!!.firstName ?: throw JsonFieldNotFoundException("firstName")
-                user.studentData!!.lastName ?: throw JsonFieldNotFoundException("lastName")
-                newUser.studentData = user.studentData
+                newUser.studentData = Student(
+                        StaticHelpers.checkJsonField(user.studentData!!.firstName, "firstName"),
+                        StaticHelpers.checkJsonField(user.studentData!!.lastName, "lastName")
+                )
                 newUser.studentData!!.user = newUser
+
+                val studentRole = roleRepository.findByName("student")
+                newUser.userRoles.add(UserRole(newUser, studentRole))
             }
             else -> throw BadRequestException("No user type found")
         }
 
         val userRole = roleRepository.findByName("user")
 
-        newUser.userRoles = mutableListOf()
         newUser.userRoles.add(UserRole(newUser, userRole))
 
         return userRepository.save(newUser)
@@ -108,34 +118,15 @@ open class UserServiceImpl(
 
     @Transactional
     override fun update(user: User): User {
-        val authentication = SecurityContextHolder.getContext().authentication
-        val currentUser = userRepository.findByUsername(authentication.name)
+        val currentUser = findCurrentUser()
 
-        if (currentUser != null) {
-            if (user.username != null) {
-                currentUser.username = user.username
-            }
+        if (user.username != null) currentUser.username = user.username
+        if (user.password != null) currentUser.setPasswordEncrypt(user.password!!)
+        if (user.email != null) currentUser.email = user.email
 
-            if (user.password != null) {
-                currentUser.setPasswordEncrypt(user.password!!)
-            }
+        // @NOTE: roles cannot be updated
 
-            if (user.userRoles.isNotEmpty()) {
-                // with so many relationships happening, I decided to go
-                // with old school queries
-                // delete the old ones
-                roleRepository.deleteAllUserRoleByUserId(currentUser.userId!!)
-
-                // add the new ones
-                for (ur in user.userRoles) {
-                    roleRepository.insertUserRole(currentUser.userId!!, ur.role!!.roleId!!)
-                }
-            }
-
-            return userRepository.save(currentUser)
-        } else {
-            throw UserNotFoundException(authentication.name)
-        }
+        return userRepository.save(currentUser)
     }
 
     @Transactional
