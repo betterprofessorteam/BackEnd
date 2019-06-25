@@ -28,9 +28,14 @@ class Tracker {
     var deadline: Long? = null
 
     var shouldSendMessage: Boolean? = null
-    var messageFromUserId: Long? = null
-    var messageToUserId: Long? = null
+    var messageSenderUserId: Long? = null
+    var messageReceiverUserId: Long? = null
     var messageText: String? = null
+
+    @ManyToOne
+    @JoinColumn(name = "mentorId")
+    @JsonIgnore
+    var mentor: Mentor? = null
 
     constructor()
     constructor(
@@ -38,17 +43,19 @@ class Tracker {
             name: String?,
             deadline: Long?,
             shouldSendMessage: Boolean?,
-            messageFromUserId: Long?,
-            messageToUserId: Long?,
-            messageText: String?
+            messageSenderUserId: Long?,
+            messageReceiverUserId: Long?,
+            messageText: String?,
+            mentor: Mentor?
     ) {
         this.type = type
         this.name = name
         this.deadline = deadline
         this.shouldSendMessage = shouldSendMessage
-        this.messageFromUserId = messageFromUserId
-        this.messageToUserId = messageToUserId
+        this.messageSenderUserId = messageSenderUserId
+        this.messageReceiverUserId = messageReceiverUserId
         this.messageText = messageText
+        this.mentor = mentor
     }
 
 

@@ -6,7 +6,7 @@ import org.springframework.data.repository.CrudRepository
 
 interface TrackerRepository : CrudRepository<Tracker, Long> {
 
-    @Query(value = "SELECT * FROM trackers WHERE deadline<:currentTime AND should_send_message=true", nativeQuery = true)
-    fun findAllLiveTracker(currentTime: Long): MutableList<Tracker>
+    @Query(value = "SELECT * FROM trackers WHERE should_send_message=true", nativeQuery = true)
+    fun findAllTrackerToSend(): MutableList<Tracker>
 
 }

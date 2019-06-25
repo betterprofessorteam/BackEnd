@@ -29,8 +29,8 @@ class Student {
     @JsonIgnore
     var mentors: MutableList<Mentor> = mutableListOf()
 
-    @OneToMany
-    var projects: MutableList<Project> = mutableListOf()
+//    @OneToMany(cascade = [CascadeType.ALL])
+//    var projects: MutableList<Project> = mutableListOf()
 
     constructor()
     constructor(firstName: String?, lastName: String?) {

@@ -13,11 +13,10 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class TrackerController(private val trackerService: TrackerService) {
 
-    @ApiOperation(value = "Add a tracker for the current user",responseReference = """{"id":1}""")
+    @ApiOperation(value = "Add a tracker for the current user", response = Tracker::class)
     @PostMapping("/trackers")
     fun addTracker(@RequestBody tracker: Tracker): ResponseEntity<*> {
-        val id = trackerService.save(tracker)
-        return ResponseEntity("""{"id":$id}""", HttpStatus.CREATED)
+        return ResponseEntity(trackerService.save(tracker), HttpStatus.CREATED)
     }
 
 }
