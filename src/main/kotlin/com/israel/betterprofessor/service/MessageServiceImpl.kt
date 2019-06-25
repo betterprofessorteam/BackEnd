@@ -1,5 +1,6 @@
 package com.israel.betterprofessor.service
 
+import com.israel.betterprofessor.StaticHelpers
 import com.israel.betterprofessor.exception.BadRequestException
 import com.israel.betterprofessor.exception.JsonFieldNotFoundException
 import com.israel.betterprofessor.exception.MessageNotFoundException
@@ -18,7 +19,8 @@ class MessageServiceImpl(
     override fun sendMessage(message: Message): Message {
         val currentUser = userService.findCurrentUser()
 
-        if (message.receiverUserId == null) throw JsonFieldNotFoundException("receiverUserId")
+        StaticHelpers.checkJsonField(message.receiverUserId, "receiverUserId")
+        StaticHelpers.checkJsonField(message.text, "text")
 
         userService.findUserById(message.receiverUserId!!)
 

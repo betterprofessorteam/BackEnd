@@ -28,8 +28,12 @@ class Tracker {
     var deadline: Long? = null
 
     var shouldSendMessage: Boolean? = null
+
     var messageSenderUserId: Long? = null
+
+    // not constraint, should be able to exist without the receiver
     var messageReceiverUserId: Long? = null
+
     var messageText: String? = null
 
     @ManyToOne
