@@ -49,7 +49,7 @@ class UserController(
         return ResponseEntity(mentors, HttpStatus.OK)
     }
 
-    @ApiOperation(value = "Get all students", response = User::class, responseContainer = "List")
+    @ApiOperation(value = "Get all users that are students", response = User::class, responseContainer = "List")
     @PreAuthorize("hasAuthority('ROLE_USER')")
     @GetMapping("/user/students")
     fun getStudentUsers(): ResponseEntity<*> {

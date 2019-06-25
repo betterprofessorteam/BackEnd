@@ -45,15 +45,15 @@ class User {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     var studentData: Student? = null
 
-    @OneToMany(cascade = [CascadeType.ALL])
-    @JoinColumn(name = "senderUserId", referencedColumnName = "userId")
-    @JsonIgnore
-    var messageSent: MutableList<Message> = mutableListOf()
-
-    @OneToMany(cascade = [CascadeType.ALL])
-    @JoinColumn(name = "receiverUserId", referencedColumnName = "userId")
-    @JsonIgnore
-    var messageReceived: MutableList<Message> = mutableListOf()
+//    @OneToMany(cascade = [CascadeType.ALL])
+//    @JoinColumn(name = "senderUserId", referencedColumnName = "userId")
+//    @JsonIgnore
+//    var messageSent: MutableList<Message> = mutableListOf()
+//
+//    @OneToMany(cascade = [CascadeType.ALL])
+//    @JoinColumn(name = "receiverUserId", referencedColumnName = "userId")
+//    @JsonIgnore
+//    var messageReceived: MutableList<Message> = mutableListOf()
 
     constructor()
 

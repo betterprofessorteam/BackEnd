@@ -15,13 +15,14 @@ class Message {
 //    @ManyToOne(targetEntity = User::class)
 //    @JoinColumn(name = "senderUserId")
 
-    @Column(nullable = false)
+//    @Column(nullable = false)
     var senderUserId: Long? = null
 
     @ApiModelProperty(required = true)
 //    @ManyToOne(targetEntity = User::class)
 //    @JoinColumn(name = "receiverUserId")
-    @Column(nullable = false)
+
+//    @Column(nullable = false)
     var receiverUserId: Long? = null
 
     // unix time UTC

@@ -18,6 +18,8 @@ class MessengerService(
         val trackers = trackerService.findAllLiveTracker()
         val currentTime = System.currentTimeMillis()
         trackers.forEach {
+            // TODO check if the users still exists
+
             val newMessage = Message(it.messageReceiverUserId, it.messageSenderUserId, currentTime, it.messageText)
 
             messageRepository.save(newMessage)
