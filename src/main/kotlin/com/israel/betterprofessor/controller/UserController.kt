@@ -58,7 +58,7 @@ class UserController(
     }
 
     @ApiOperation(value = "Get all users that are students", response = User::class, responseContainer = "List")
-    @PreAuthorize("hasAuthority('ROLE_USER')")
+    @PreAuthorize("hasAuthority('ROLE_MENTOR')")
     @GetMapping("/user/students")
     fun getStudentUsers(): ResponseEntity<*> {
         val studentUsers = userService.findAllStudentUser()

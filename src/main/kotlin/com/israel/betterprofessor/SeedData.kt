@@ -17,9 +17,13 @@ class SeedData(
     override fun run(vararg args: String?) {
         val adminRole = Role("admin")
         val userRole = Role("user")
+        val mentorRole = Role("mentor")
+        val studentRole = Role("student")
 
         roleRepository.save(adminRole)
         roleRepository.save(userRole)
+        roleRepository.save(mentorRole)
+        roleRepository.save(studentRole)
 
         val adminUserRoles = mutableListOf<UserRole>()
         adminUserRoles.add(UserRole(User(), adminRole))
@@ -42,10 +46,11 @@ class SeedData(
         val faker = Faker()
 
         for (i in 0..10) {
-            val userUserRoles = mutableListOf<UserRole>()
-            userUserRoles.add(UserRole(User(), userRole))
+            val mentorUserRoles = mutableListOf<UserRole>()
+            mentorUserRoles.add(UserRole(User(), userRole))
+            mentorUserRoles.add(UserRole(User(), mentorRole))
 
-            val mentorUser = User("mentor$i", "password", userUserRoles)
+            val mentorUser = User("mentor$i", "password", mentorUserRoles)
 
             val mentor = Mentor(faker.name().firstName(), faker.name().lastName())
 
@@ -56,10 +61,11 @@ class SeedData(
         }
 
         for (i in 0..100) {
-            val userUserRoles = mutableListOf<UserRole>()
-            userUserRoles.add(UserRole(User(), userRole))
+            val studentUserRoles = mutableListOf<UserRole>()
+            studentUserRoles.add(UserRole(User(), userRole))
+            studentUserRoles.add(UserRole(User(), studentRole))
 
-            val studentUser = User("student$i", "password", userUserRoles)
+            val studentUser = User("student$i", "password", studentUserRoles)
 
             val student = Student(faker.name().firstName(), faker.name().lastName())
 
