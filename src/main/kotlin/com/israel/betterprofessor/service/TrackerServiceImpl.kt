@@ -18,10 +18,12 @@ class TrackerServiceImpl(
         trackerRepository.saveAll(trackers)
     }
 
-    override fun findAll(): MutableList<Tracker> {
-        val trackers = mutableListOf<Tracker>()
-        trackerRepository.findAll().iterator().forEachRemaining { trackers.add(it) }
-        return trackers
+    override fun findAllOfCurrentUser(): MutableList<Tracker> {
+        val currentUser = userService.findCurrentUser()
+
+        if (currentUser.mentorData == null) throw BadRequestException("Current user is not a mentor")
+
+        return currentUser.mentorData!!.trackers
     }
 
     override fun findAllLiveTracker(): MutableList<Tracker> {
