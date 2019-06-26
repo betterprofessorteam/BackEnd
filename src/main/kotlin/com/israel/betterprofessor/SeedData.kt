@@ -29,6 +29,7 @@ class SeedData(
         adminUserRoles.add(UserRole(User(), adminRole))
         adminUserRoles.add(UserRole(User(), userRole))
         val adminUser = User("admin", "password", adminUserRoles)
+        adminUser.email = "admin@betterprofessor.com"
 
         userRepository.save(adminUser)
 

@@ -30,7 +30,8 @@ class User {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     var password: String? = null
 
-    @Column
+    @ApiModelProperty(required = true)
+    @Column(nullable = false, unique = true)
     var email: String? = null
 
     @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL])

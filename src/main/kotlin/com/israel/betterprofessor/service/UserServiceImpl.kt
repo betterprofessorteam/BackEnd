@@ -26,6 +26,17 @@ open class UserServiceImpl(
         private val roleRepository: RoleRepository
 ) : UserDetailsService, UserService {
 
+    companion object {
+        const val VALID_USERNAME_REGEX = "^[a-zA-Z0-9]+\$"
+        const val VALID_PASSWORD_REGEX = "^[a-zA-Z0-9]+\$"
+        const val VALID_EMAIL_REGEX = "(?:[a-z0-9!#\$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#\$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])"
+
+        val VALID_USERNAME_PATTERN = Pattern.compile(VALID_USERNAME_REGEX)
+        val VALID_PASSWORD_PATTERN = Pattern.compile(VALID_PASSWORD_REGEX)
+        val VALID_EMAIL_PATTERN = Pattern.compile(VALID_EMAIL_REGEX)
+
+    }
+
     override fun findCurrentUser(): User {
         val authentication = SecurityContextHolder.getContext().authentication
         val currentUser = userRepository.findByUsername(authentication.name)
@@ -86,6 +97,9 @@ open class UserServiceImpl(
         val password = StaticHelpers.checkJsonField(user.password, "password")
         if (!isValidPassword(password)) throw BadRequestException("Invalid password!")
 
+        val email = StaticHelpers.checkJsonField(user.email, "email")
+        if (!isValidEmail(email)) throw BadRequestException("Invalid email!")
+
         if (userRepository.findByUsername(username) != null) throw BadRequestException("Username already taken!!!")
 
         val newUser = User()
@@ -103,7 +117,7 @@ open class UserServiceImpl(
                 newUser.mentorData!!.user = newUser
 
                 val mentorRole = roleRepository.findByName("mentor")
-                newUser.userRoles.add(UserRole(newUser, mentorRole))
+                newUser.userRoles.add(UserRole(newUser, mentorRole!!))
             }
             user.studentData != null -> {
                 newUser.studentData = Student(
@@ -113,14 +127,14 @@ open class UserServiceImpl(
                 newUser.studentData!!.user = newUser
 
                 val studentRole = roleRepository.findByName("student")
-                newUser.userRoles.add(UserRole(newUser, studentRole))
+                newUser.userRoles.add(UserRole(newUser, studentRole!!))
             }
             else -> throw BadRequestException("No user type found")
         }
 
         val userRole = roleRepository.findByName("user")
 
-        newUser.userRoles.add(UserRole(newUser, userRole))
+        newUser.userRoles.add(UserRole(newUser, userRole!!))
 
         return userRepository.save(newUser)
     }
@@ -170,14 +184,18 @@ open class UserServiceImpl(
     fun isValidUsername(username: String): Boolean {
         if (username.length < 6) return false
 
-        val pattern = Pattern.compile("^[a-zA-Z0-9]+\$")
-        return pattern.matcher(username).matches()
+        return VALID_USERNAME_PATTERN.matcher(username).matches()
     }
 
     fun isValidPassword(password: String): Boolean {
         if (password.length < 6) return false
 
-        val pattern = Pattern.compile("^[a-zA-Z0-9]+\$")
-        return pattern.matcher(password).matches()
+        return VALID_PASSWORD_PATTERN.matcher(password).matches()
+    }
+
+    fun isValidEmail(email: String): Boolean {
+        if (email.isEmpty()) return false
+
+        return VALID_EMAIL_PATTERN.matcher(email).matches()
     }
 }
