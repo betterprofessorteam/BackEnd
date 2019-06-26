@@ -29,6 +29,7 @@ class SeedData(
         adminUserRoles.add(UserRole(User(), adminRole))
         adminUserRoles.add(UserRole(User(), userRole))
         val adminUser = User("admin", "password", adminUserRoles)
+        adminUser.email = "admin@betterprofessor.com"
 
         userRepository.save(adminUser)
 
@@ -45,7 +46,7 @@ class SeedData(
 //
         val faker = Faker()
 
-        for (i in 0..10) {
+        for (i in 0..9) {
             val mentorUserRoles = mutableListOf<UserRole>()
             mentorUserRoles.add(UserRole(User(), userRole))
             mentorUserRoles.add(UserRole(User(), mentorRole))
@@ -53,6 +54,7 @@ class SeedData(
             val mentorUser = User("mentor$i", "password", mentorUserRoles)
 
             val mentor = Mentor(faker.name().firstName(), faker.name().lastName())
+            mentorUser.email = mentor.firstName!!.toLowerCase() + mentor.lastName!![0].toLowerCase() + i + "@betterprofessor.com"
 
             mentorUser.mentorData = mentor
             mentor.user = mentorUser
@@ -60,7 +62,7 @@ class SeedData(
             userRepository.save(mentorUser)
         }
 
-        for (i in 0..100) {
+        for (i in 0..99) {
             val studentUserRoles = mutableListOf<UserRole>()
             studentUserRoles.add(UserRole(User(), userRole))
             studentUserRoles.add(UserRole(User(), studentRole))
@@ -68,6 +70,7 @@ class SeedData(
             val studentUser = User("student$i", "password", studentUserRoles)
 
             val student = Student(faker.name().firstName(), faker.name().lastName())
+            studentUser.email = student.firstName!!.toLowerCase() + student.lastName!![0].toLowerCase() + i + "@betterprofessor.com"
 
             studentUser.studentData = student
             student.user = studentUser

@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional
 
 interface RoleRepository : CrudRepository<Role, Long> {
 
-    fun findByName(name: String): Role
+    fun findByName(name: String): Role?
 
     @Transactional
     @Modifying

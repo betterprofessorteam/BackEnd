@@ -20,6 +20,7 @@ class MessageServiceImpl(
         val currentUser = userService.findCurrentUser()
 
         StaticHelpers.checkJsonField(message.receiverUserId, "receiverUserId")
+        StaticHelpers.checkJsonField(message.title, "title")
         StaticHelpers.checkJsonField(message.text, "text")
 
         userService.findUserById(message.receiverUserId!!)
@@ -28,6 +29,7 @@ class MessageServiceImpl(
                 currentUser.userId,
                 message.receiverUserId,
                 System.currentTimeMillis(),
+                message.title,
                 message.text
         )
 
