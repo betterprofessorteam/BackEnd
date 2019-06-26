@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 import java.util.ArrayList
+import java.util.regex.Pattern
 
 @Service(value = "userService")
 open class UserServiceImpl(
@@ -79,9 +80,17 @@ open class UserServiceImpl(
 
     @Transactional
     override fun save(user: User): User {
+        val username = StaticHelpers.checkJsonField(user.username, "username")
+        if (!isValidUsername(username)) throw BadRequestException("Invalid username!")
+
+        var password = StaticHelpers.checkJsonField(user.password, "password")
+        if (!isValidPassword(password)) throw BadRequestException("Invalid password!")
+
+        if (userRepository.findByUsername(username) != null) throw BadRequestException("Username already taken!!!")
+
         val newUser = User()
-        newUser.username = StaticHelpers.checkJsonField(user.username, "username")
-        newUser.setPasswordEncrypt(StaticHelpers.checkJsonField(user.password, "password"))
+        newUser.username = username
+        newUser.setPasswordEncrypt(password)
         newUser.email = user.email
 
         // mentor/student data
@@ -156,5 +165,19 @@ open class UserServiceImpl(
         }.user
 
         userRepository.save(currentMentorUser!!)
+    }
+
+    fun isValidUsername(username: String): Boolean {
+        if (username.length < 6) return false
+
+        val pattern = Pattern.compile("^[a-zA-Z0-9]+\$")
+        return pattern.matcher(username).matches()
+    }
+
+    fun isValidPassword(password: String): Boolean {
+        if (password.length < 6) return false
+
+        val pattern = Pattern.compile("^[a-zA-Z0-9]+\$")
+        return pattern.matcher(password).matches()
     }
 }
