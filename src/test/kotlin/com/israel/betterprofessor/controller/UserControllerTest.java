@@ -45,6 +45,7 @@ public class UserControllerTest {
         String url = "/users";
 
         User returnUser = new User();
+        returnUser.setUserId(7L);
         returnUser.setUsername("usernameregister123");
         Mentor mentorData = new Mentor();
         mentorData.setFirstName("mentor first name register");
@@ -65,6 +66,7 @@ public class UserControllerTest {
         ObjectMapper mapper = new ObjectMapper();
         User responseUser = mapper.readValue(responseStr, User.class);
 
+        assertEquals(7L, responseUser.getUserId());
         assertEquals("usernameregister123", responseUser.getUsername());
         assertEquals("mentor first name register", responseUser.getMentorData().getFirstName());
         assertEquals("mentor last name register", responseUser.getMentorData().getLastName());
