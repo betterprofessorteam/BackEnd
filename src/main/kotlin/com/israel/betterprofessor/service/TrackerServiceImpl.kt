@@ -49,7 +49,7 @@ class TrackerServiceImpl(
 
         currentUser.mentorData ?: throw BadRequestException("Current user must be a mentor")
 
-        var newTracker = Tracker(
+        val newTracker = Tracker(
                 tracker.type,
                 tracker.name,
                 tracker.deadline,

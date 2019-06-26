@@ -83,7 +83,7 @@ open class UserServiceImpl(
         val username = StaticHelpers.checkJsonField(user.username, "username")
         if (!isValidUsername(username)) throw BadRequestException("Invalid username!")
 
-        var password = StaticHelpers.checkJsonField(user.password, "password")
+        val password = StaticHelpers.checkJsonField(user.password, "password")
         if (!isValidPassword(password)) throw BadRequestException("Invalid password!")
 
         if (userRepository.findByUsername(username) != null) throw BadRequestException("Username already taken!!!")
