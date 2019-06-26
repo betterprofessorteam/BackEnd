@@ -1,6 +1,7 @@
 package com.israel.betterprofessor.model
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import io.swagger.annotations.ApiModelProperty
 import javax.persistence.*
 
 @Entity
@@ -21,12 +22,17 @@ class Tracker {
     @GeneratedValue
     var trackerId: Long? = null
 
+    @ApiModelProperty(required = true)
     var type: String? = null
+
+    @ApiModelProperty(required = true)
     var name: String? = null
 
     // unix time UTC
+    @ApiModelProperty(required = true)
     var deadline: Long? = null
 
+    @ApiModelProperty(required = true)
     var shouldSendMessage: Boolean? = null
 
     // TODO constraint this
@@ -35,6 +41,7 @@ class Tracker {
     // not constraint, should be able to exist without the receiver
     var messageReceiverUserId: Long? = null
 
+    var messageTitle: String? = null
     var messageText: String? = null
 
     @ManyToOne
@@ -50,6 +57,7 @@ class Tracker {
             shouldSendMessage: Boolean?,
             messageSenderUserId: Long?,
             messageReceiverUserId: Long?,
+            messageTitle: String?,
             messageText: String?,
             mentor: Mentor?
     ) {
@@ -59,6 +67,7 @@ class Tracker {
         this.shouldSendMessage = shouldSendMessage
         this.messageSenderUserId = messageSenderUserId
         this.messageReceiverUserId = messageReceiverUserId
+        this.messageTitle = messageTitle
         this.messageText = messageText
         this.mentor = mentor
     }

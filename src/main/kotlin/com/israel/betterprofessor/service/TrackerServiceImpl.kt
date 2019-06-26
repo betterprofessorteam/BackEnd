@@ -2,6 +2,7 @@ package com.israel.betterprofessor.service
 
 import com.israel.betterprofessor.StaticHelpers
 import com.israel.betterprofessor.exception.BadRequestException
+import com.israel.betterprofessor.model.Message
 import com.israel.betterprofessor.model.Tracker
 import com.israel.betterprofessor.repository.TrackerRepository
 import org.springframework.stereotype.Service
@@ -36,12 +37,11 @@ class TrackerServiceImpl(
     override fun save(tracker: Tracker): Tracker {
         // TODO can only send message to own student. How about no
 
-        StaticHelpers.checkJsonField(tracker.messageReceiverUserId, "messageReceiverUserId")
         StaticHelpers.checkJsonField(tracker.type, "type")
         StaticHelpers.checkJsonField(tracker.name, "name")
         StaticHelpers.checkJsonField(tracker.deadline, "deadline")
         StaticHelpers.checkJsonField(tracker.shouldSendMessage, "shouldSendMessage")
-        StaticHelpers.checkJsonField(tracker.messageText, "messageText")
+        StaticHelpers.checkJsonField(tracker.messageReceiverUserId, "messageReceiverUserId")
 
         if (!Tracker.isValidType(tracker.type!!)) throw BadRequestException("Invalid tracker type")
         val currentUser = userService.findCurrentUser()
@@ -56,7 +56,8 @@ class TrackerServiceImpl(
                 tracker.shouldSendMessage,
                 currentUser.userId,
                 tracker.messageReceiverUserId,
-                tracker.messageText,
+                tracker.messageTitle ?: "",
+                tracker.messageText ?: "",
                 currentUser.mentorData
         )
 

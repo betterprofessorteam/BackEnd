@@ -31,14 +31,18 @@ class Message {
     var timeRead: Long? = null
 
     @ApiModelProperty(required = true)
+    var title: String? = null
+
+    @ApiModelProperty(required = true)
     var text: String? = null
 
     constructor()
-    constructor(senderUserId: Long?, receiverUserId: Long?, timeSent: Long?, text: String?) {
+    constructor(senderUserId: Long?, receiverUserId: Long?, timeSent: Long?, title: String?, text: String?) {
         this.senderUserId = senderUserId
         this.receiverUserId = receiverUserId
         this.timeSent = timeSent
         this.timeRead = 0
+        this.title = title
         this.text = text
     }
 

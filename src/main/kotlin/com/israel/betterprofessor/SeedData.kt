@@ -54,7 +54,7 @@ class SeedData(
             val mentorUser = User("mentor$i", "password", mentorUserRoles)
 
             val mentor = Mentor(faker.name().firstName(), faker.name().lastName())
-            mentorUser.email = mentor.firstName!!.toLowerCase() + i + "@betterprofessor.com"
+            mentorUser.email = mentor.firstName!!.toLowerCase() + mentor.lastName!![0].toLowerCase() + i + "@betterprofessor.com"
 
             mentorUser.mentorData = mentor
             mentor.user = mentorUser
@@ -70,7 +70,7 @@ class SeedData(
             val studentUser = User("student$i", "password", studentUserRoles)
 
             val student = Student(faker.name().firstName(), faker.name().lastName())
-            studentUser.email = student.firstName!!.toLowerCase() + i + "@betterprofessor.com"
+            studentUser.email = student.firstName!!.toLowerCase() + student.lastName!![0].toLowerCase() + i + "@betterprofessor.com"
 
             studentUser.studentData = student
             student.user = studentUser

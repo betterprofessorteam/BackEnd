@@ -21,13 +21,13 @@ class MessengerService(
         val trackers = trackerService.findAllLiveTracker()
         val currentTime = System.currentTimeMillis()
         trackers.forEach {
-            // TODO check if the users still exists
 
             try {
+                // check if the users still exists
                 userService.findUserById(it.messageSenderUserId!!)
                 userService.findUserById(it.messageReceiverUserId!!)
 
-                val newMessage = Message(it.messageReceiverUserId, it.messageSenderUserId, currentTime, it.messageText)
+                val newMessage = Message(it.messageReceiverUserId, it.messageSenderUserId, currentTime, it.messageTitle, it.messageText)
 
                 messageRepository.save(newMessage)
             } catch (e: UserNotFoundException) {
