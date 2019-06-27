@@ -12,6 +12,15 @@ interface MessageRepository : CrudRepository<Message, Long> {
     @Query(value = "SELECT * FROM messages WHERE sender_user_id=:currentUserId OR receiver_user_id=:currentUserId", nativeQuery = true)
     fun findAllMessageByUser(currentUserId: Long): MutableList<Message>
 
+    @Query(value = "SELECT * FROM messages WHERE sender_user_id=:currentUserId", nativeQuery = true)
+    fun findAllMessageSentByUser(currentUserId: Long): MutableList<Message>
+
+    @Query(value = "SELECT * FROM messages WHERE receiver_user_id=:currentUserId", nativeQuery = true)
+    fun findAllMessageReceivedByUser(currentUserId: Long): MutableList<Message>
+
+    @Query(value = "SELECT * FROM messages WHERE receiver_user_id=:currentUserId AND time_read=0", nativeQuery = true)
+    fun findAllMessageReceivedUnreadByUser(currentUserId: Long): MutableList<Message>
+
     @Query(value = "SELECT * FROM messages WHERE time_read=0 AND receiver_user_id=:currentUserId", nativeQuery = true)
     fun findAllMessageByUserUnread(currentUserId: Long)
 

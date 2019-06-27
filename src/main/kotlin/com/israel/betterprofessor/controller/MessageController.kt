@@ -29,6 +29,30 @@ class MessageController(private val messageService: MessageService) {
         return ResponseEntity(messages, HttpStatus.OK)
     }
 
+    @ApiOperation(value = "Get all messages sent by the current user", response = Message::class, responseContainer = "List")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    @GetMapping("/messages/sent")
+    fun getMessagesSent(): ResponseEntity<*> {
+        val messages = messageService.findAllMessageSent()
+        return ResponseEntity(messages, HttpStatus.OK)
+    }
+
+    @ApiOperation(value = "Get all messages received by the current user", response = Message::class, responseContainer = "List")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    @GetMapping("/messages/received")
+    fun getMessagesReceived(): ResponseEntity<*> {
+        val messages = messageService.findAllMessageReceived()
+        return ResponseEntity(messages, HttpStatus.OK)
+    }
+
+    @ApiOperation(value = "Get all messages received by the current user that is unread", response = Message::class, responseContainer = "List")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    @GetMapping("/messages/received/unread")
+    fun getMessagesReceivedUnread(): ResponseEntity<*> {
+        val messages = messageService.findAllMessageReceivedUnread()
+        return ResponseEntity(messages, HttpStatus.OK)
+    }
+
     @ApiOperation(value = "Get all the messages with the user of the current user", response = Message::class, responseContainer = "List")
     @PreAuthorize("hasAuthority('ROLE_USER')")
     @GetMapping("/messages/user/{id}")
