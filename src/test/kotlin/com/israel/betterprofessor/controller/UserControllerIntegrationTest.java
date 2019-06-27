@@ -26,8 +26,6 @@ public class UserControllerIntegrationTest {
         RestAssuredMockMvc.webAppContextSetup(webApplicationContext);
     }
 
-
-
     @Test
     public void login() throws Exception {
         Header auth = new Header("Authorization", "Basic YmV0dGVyLXByb2Zlc3Nvci1jbGllbnQ6YmV0dGVyLXByb2Zlc3Nvci1zZWNyZXQ=");

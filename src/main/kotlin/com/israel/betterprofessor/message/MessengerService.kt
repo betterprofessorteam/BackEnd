@@ -21,7 +21,6 @@ class MessengerService(
         val trackers = trackerService.findAllLiveTracker()
         val currentTime = System.currentTimeMillis()
         trackers.forEach {
-
             try {
                 // check if the users still exists
                 userService.findUserById(it.messageSenderUserId!!)

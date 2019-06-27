@@ -29,7 +29,8 @@ class TrackerServiceImpl(
 
     override fun findAllLiveTracker(): MutableList<Tracker> {
         val trackers = mutableListOf<Tracker>()
-        trackerRepository.findAllTrackerToSend().iterator().forEachRemaining { trackers.add(it) }
+        val currentTime = System.currentTimeMillis()
+        trackerRepository.findAllTrackerToSend(currentTime).iterator().forEachRemaining { trackers.add(it) }
         return trackers
     }
 

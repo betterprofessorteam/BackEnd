@@ -2,6 +2,7 @@ package com.israel.betterprofessor.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.israel.betterprofessor.model.Mentor;
+import com.israel.betterprofessor.model.Student;
 import com.israel.betterprofessor.model.User;
 import com.israel.betterprofessor.service.UserService;
 import org.junit.Assert.*;
@@ -38,10 +39,19 @@ public class UserControllerTest {
     @Before
     public void setup() {
         users = new ArrayList<>();
+        User mentorUser0 = new User("mentor0", "password", new ArrayList<>());
+        mentorUser0.setUserId(1L);
+        mentorUser0.setMentorData(new Mentor("mentor_fname", "mentor_lname"));
+        users.add(mentorUser0);
+
+        User studentUser0 = new User("student0", "password", new ArrayList<>());
+        studentUser0.setUserId(1L);
+        studentUser0.setStudentData(new Student("student_fname", "student_lname"));
+        users.add(studentUser0);
     }
 
     @Test
-    public void register() throws Exception {
+    public void addUser() throws Exception {
         String url = "/users";
 
         User returnUser = new User();
@@ -70,6 +80,12 @@ public class UserControllerTest {
         assertEquals("usernameregister123", responseUser.getUsername());
         assertEquals("mentor first name register", responseUser.getMentorData().getFirstName());
         assertEquals("mentor last name register", responseUser.getMentorData().getLastName());
+
+    }
+
+    @Test
+    public void getUser() throws Exception {
+        String url = "/user";
 
     }
 

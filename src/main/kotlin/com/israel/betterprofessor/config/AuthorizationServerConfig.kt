@@ -27,8 +27,8 @@ open class AuthorizationServerConfig : AuthorizationServerConfigurerAdapter() {
     override fun configure(configurer: ClientDetailsServiceConfigurer) {
 
         configurer.inMemory()
-                .withClient(CLIENT_ID)
-                .secret(encoder!!.encode(CLIENT_SECRET))
+                .withClient(System.getenv("CLIENT_ID"))
+                .secret(encoder!!.encode(System.getenv("CLIENT_SECRET")))
                 .authorizedGrantTypes(GRANT_TYPE_PASSWORD, AUTHORIZATION_CODE, REFRESH_TOKEN, IMPLICIT)
                 .scopes(SCOPE_READ, SCOPE_WRITE, TRUST)
                 .accessTokenValiditySeconds(ACCESS_TOKEN_VALIDITY_SECONDS)
@@ -41,8 +41,6 @@ open class AuthorizationServerConfig : AuthorizationServerConfigurerAdapter() {
     }
 
     companion object {
-        internal val CLIENT_ID = "better-professor-client"
-        internal val CLIENT_SECRET = "better-professor-secret"
         internal val GRANT_TYPE_PASSWORD = "password"
         internal val AUTHORIZATION_CODE = "authorization_code"
         internal val REFRESH_TOKEN = "refresh_token"
