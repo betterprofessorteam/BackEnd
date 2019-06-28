@@ -42,6 +42,24 @@ class MessageServiceImpl(
         return messageRepository.findAllMessageByUser(currentUser.userId!!)
     }
 
+    override fun findAllMessageSent(): MutableList<Message> {
+        val currentUser = userService.findCurrentUser()
+
+        return messageRepository.findAllMessageSentByUser(currentUser.userId!!)
+    }
+
+    override fun findAllMessageReceived(): MutableList<Message> {
+        val currentUser = userService.findCurrentUser()
+
+        return messageRepository.findAllMessageReceivedByUser(currentUser.userId!!)
+    }
+
+    override fun findAllMessageReceivedUnread(): MutableList<Message> {
+        val currentUser = userService.findCurrentUser()
+
+        return messageRepository.findAllMessageReceivedUnreadByUser(currentUser.userId!!)
+    }
+
     override fun findAllMessageWithUser(id: Long): MutableList<Message> {
         val currentUser = userService.findCurrentUser()
 

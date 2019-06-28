@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class TrackerController(private val trackerService: TrackerService) {
 
-    @ApiOperation(value = "Add a tracker for the current mentor user", response = Tracker::class)
+    @ApiOperation(value = "Add a tracker for the current mentor user. Tracker types are \"Project\", \"Feedback\", \"Letter of Recommendation\"", response = Tracker::class)
     @PreAuthorize("hasAuthority('ROLE_USER')")
     @PostMapping("/trackers")
     fun addTracker(@RequestBody tracker: Tracker): ResponseEntity<*> {

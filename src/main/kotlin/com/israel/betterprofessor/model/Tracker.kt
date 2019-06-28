@@ -23,25 +23,34 @@ class Tracker {
     var trackerId: Long? = null
 
     @ApiModelProperty(required = true)
+    @Column(nullable = false)
     var type: String? = null
 
     @ApiModelProperty(required = true)
+    @Column(nullable = false)
     var name: String? = null
 
     // unix time UTC
     @ApiModelProperty(required = true)
+    @Column(nullable = false)
     var deadline: Long? = null
 
     @ApiModelProperty(required = true)
+    @Column(nullable = false)
     var shouldSendMessage: Boolean? = null
 
     // TODO constraint this
+    @Column(nullable = false)
     var messageSenderUserId: Long? = null
 
     // not constraint, should be able to exist without the receiver
+    @Column(nullable = false)
     var messageReceiverUserId: Long? = null
 
+    @Column(nullable = false)
     var messageTitle: String? = null
+
+    @Column(nullable = false)
     var messageText: String? = null
 
     @ManyToOne
