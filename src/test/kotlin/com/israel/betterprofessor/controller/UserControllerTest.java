@@ -87,6 +87,33 @@ public class UserControllerTest {
     public void getUser() throws Exception {
         String url = "/user";
 
+        User returnUser = new User();
+        returnUser.setUserId(7L);
+        returnUser.setUsername("username123");
+        Mentor mentorData = new Mentor();
+        mentorData.setFirstName("mentor first name");
+        mentorData.setLastName("mentor last name");
+        returnUser.setMentorData(mentorData);
+
+        Mockito.when(userService.findCurrentUser()).thenReturn(returnUser);
+
+        RequestBuilder rb = MockMvcRequestBuilders
+                .post(url)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"username\":\"username123\"}");
+
+        MvcResult result = mockMvc.perform(rb).andReturn();
+
+        String responseStr = result.getResponse().getContentAsString();
+
+        ObjectMapper mapper = new ObjectMapper();
+        User responseUser = mapper.readValue(responseStr, User.class);
+
+        assertEquals(7L, responseUser.getUserId());
+        assertEquals("username123", responseUser.getUsername());
+        assertEquals("mentor first name", responseUser.getMentorData().getFirstName());
+        assertEquals("mentor last name", responseUser.getMentorData().getLastName());
     }
 
 }
