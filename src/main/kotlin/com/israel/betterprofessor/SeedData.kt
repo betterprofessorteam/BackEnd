@@ -108,8 +108,8 @@ class SeedData(
             for (i in 0 until MENTOR_STUDENT_SIZE) {
                 var studentUserId: Long
                 while (true) {
-                    val studentUserIndex = ThreadLocalRandom.current().nextLong(0, (savedStudentUsers.size - 1).toLong())
-                    studentUserId = savedStudentUsers[studentUserIndex.toInt()].userId!!
+                    val studentUserIndex = ThreadLocalRandom.current().nextInt(0, (savedStudentUsers.size - 1))
+                    studentUserId = savedStudentUsers[studentUserIndex].userId!!
                     if (!studentUserIds.contains(studentUserId)) break // not added yet
                 }
 
@@ -121,8 +121,8 @@ class SeedData(
                 mentor.students.add(student)
 
                 // add 1 tracker for a project from this student
-                val projectIdIndex = ThreadLocalRandom.current().nextLong(0, (student.projects.size - 1).toLong())
-                val project = student.projects[projectIdIndex.toInt()]
+                val projectIdIndex = ThreadLocalRandom.current().nextInt(0, (student.projects.size - 1))
+                val project = student.projects[projectIdIndex]
                 val tracker = Tracker()
                 tracker.type = Tracker.TYPE_PROJECT
                 tracker.name = "Reminder for ${student.firstName} ${student.lastName}'s ${project.title} project"
@@ -138,10 +138,10 @@ class SeedData(
                 studentRepository.save(student)
             }
 
-            val messageSentToStudentSize = ThreadLocalRandom.current().nextLong(5, 200)
-            for (i in 0 until messageSentToStudentSize.toInt()) {
-                val studentUserIndex = ThreadLocalRandom.current().nextLong(0, (savedStudentUsers.size - 1).toLong())
-                val studentUserId = savedStudentUsers[studentUserIndex.toInt()].userId!!
+            val messageSentToStudentSize = ThreadLocalRandom.current().nextInt(5, 200)
+            for (i in 0 until messageSentToStudentSize) {
+                val studentUserIndex = ThreadLocalRandom.current().nextInt(0, (savedStudentUsers.size - 1))
+                val studentUserId = savedStudentUsers[studentUserIndex].userId!!
 
                 savedMentorUser.messageSent.add(createMessage(savedMentorUser.userId!!, studentUserId, faker, currentTime))
             }
@@ -150,10 +150,10 @@ class SeedData(
         }
 
         for (savedStudentUser in savedStudentUsers) {
-            val messageSentToMentorSize = ThreadLocalRandom.current().nextLong(5, 20)
+            val messageSentToMentorSize = ThreadLocalRandom.current().nextInt(5, 20)
             for (i in 0 until messageSentToMentorSize) {
-                val mentorUserIndex = ThreadLocalRandom.current().nextLong(0, (savedMentorUsers.size - 1).toLong())
-                val mentorUserId = savedStudentUsers[mentorUserIndex.toInt()].userId!!
+                val mentorUserIndex = ThreadLocalRandom.current().nextInt(0, (savedMentorUsers.size - 1))
+                val mentorUserId = savedMentorUsers[mentorUserIndex].userId!!
 
                 savedStudentUser.messageSent.add(createMessage(savedStudentUser.userId!!, mentorUserId, faker, currentTime))
             }
